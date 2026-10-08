@@ -374,7 +374,7 @@ optional, with the given defaults used for absent keys.
 | `position` | Offset coefficients for X/Y/Z axes, where 0 means centered | `{x: 0, y: 0, z: -1.5}` |
 | `rotation` | Degrees of rotation for X/Y/Z axes | `{x: 0, y: 0, z: 0}` |
 
-Available since driver version 2.42.1.
+Available since driver version 3.6.0.
 
 ## ADB
 
@@ -439,7 +439,7 @@ Whether to listen on all network interfaces, not only `localhost`. Maps to the `
 The [`adb_listen_all_network` insecure feature](./insecure-features.md#adb_listen_all_network) must
 be enabled.
 
-Available since driver version 6.2.0.
+Available since driver version 6.7.0.
 
 ## UiAutomator2 Server
 
