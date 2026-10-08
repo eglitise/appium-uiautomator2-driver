@@ -164,9 +164,7 @@ session. Useful if your automated test needs these services.
 
 Whether to disable window animations. [Google recommends disabling animations when running automated tests](https://developer.android.com/training/testing/espresso/setup#set-up-environment),
 in order to avoid flakiness. The animation state is automatically restored after the session is
-stopped, unless the session is ended unexpectedly.
-
-Available since driver version 2.17.0.
+stopped, unless the session is ended unexpectedly, for Android 7 (Nougat / API level 25) or older.
 
 ### timeZone
 
@@ -177,7 +175,7 @@ Available since driver version 2.17.0.
 Value used to override the current timezone of the device. Persists until the next override. Must
 be [a valid TZ identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
 
-Available since driver version 2.38.0.
+Available since driver version 3.1.0.
 
 ### hideKeyboard
 
@@ -193,9 +191,16 @@ If explicitly set to `false`, `adb shell ime reset` is run on session startup, w
 currently selected/enabled IMEs to the default ones, as if the device was initially booted with the
 current locale.
 
-Available since driver version 2.28.0.
+Available since driver version 2.33.0.
 
 ### orientation
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:orientation` | `string` | Not specified |
+
+Orientation to set for the device under test upon session start. Supported values are `PORTRAIT`
+and `LANDSCAPE`. Using this capability is equivalent to calling the [setAppiumOrientation](https://appium.io/docs/en/latest/reference/api/appium/#setappiumorientation) endpoint.
 
 ### gpsEnabled
 
@@ -205,8 +210,6 @@ Available since driver version 2.28.0.
 
 Whether to enable or disable location services (GPS) upon session start. This functionality only
 works reliably starting from Android 12 (S / API level 31).
-
-Available since driver version 9.1.0.
 
 ### mockLocationApp
 
@@ -221,9 +224,11 @@ set to `null` or an empty string, Appium will skip the setup of the location moc
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:skipUnlock` | `boolean` | `true` |
+| `appium:skipUnlock` | `boolean` | Not specified |
 
-Whether to skip unlocking the device lockscreen on session startup, if one is present.
+Whether to skip automatically unlocking the device lockscreen on session startup, if one is present.
+Since the unlocking process takes time, it is recommended to set this capability to `true` and
+disable screen locking on the device(s) under test.
 
 ### unlockType
 
