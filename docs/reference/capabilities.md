@@ -445,17 +445,78 @@ Available since driver version 6.7.0.
 
 ### systemPort
 
-### uiautomator2ServerLaunchTimeout
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:systemPort` | `integer` | `8200` |
+
+The port on the host machine where the UiAutomator2 server should be listening. Must be unique for
+each session - see the [Testing in Parallel guide](../guides/parallel-tests.md) for details. If not
+provided, Appium will try the first available port in the range `[8200, 8299]`.
+
+On the device under test, the UiAutomator2 server is always started on port `6790`.
 
 ### uiautomator2ServerInstallTimeout
 
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:uiautomator2ServerInstallTimeout` | `integer` | `20000` |
+
+Maximum number of milliseconds to wait until the UiAutomator2 server application is installed on
+the device under test.
+
+### uiautomator2ServerLaunchTimeout
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:uiautomator2ServerLaunchTimeout` | `integer` | `30000` |
+
+Maximum number of milliseconds to wait until the UiAutomator2 server application on the device
+under test has started.
+
 ### uiautomator2ServerReadTimeout
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:uiautomator2ServerReadTimeout` | `integer` | `240000` |
+
+Maximum number of milliseconds to wait for a response for a request to the UiAutomator2 server.
+Must be greater than 0.
 
 ### skipServerInstallation
 
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:skipServerInstallation` | `boolean` | `false` |
+
+Whether to skip installation of the UiAutomator2 server on the device under test, along with all
+other related checks. Useful for speeding up session startup if the device already has a compatible
+UiAutomator2 server app installed. Note that unexpected errors may occur if the UiAutomator2 server
+app is not compatible with the driver or the app under test.
+
 ### mjpegServerPort
 
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:mjpegServerPort` | `integer` | Not specified |
+
+The port on the host machine where the MJPEG screenshot streaming server should be listening. If
+not specified, the MJPEG stream from the device under test is not forwarded. Can be used to connect
+to the device MJPEG stream outside of the session.
+
+On the device under test, the MJPEG server is always started on port `7810`.
+
+Refer to [the MJPEG guide](../guides/mjpeg.md) for more details.
+
 ### mjpegScreenshotUrl
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:mjpegScreenshotUrl` | `string` | Not specified |
+
+URL of a service that provides realtime device screenshots in MJPEG format. If provided, screenshot
+retrieval will request images from this service rather than using the default screenshot mechanism.
+
+Refer to [the MJPEG guide](../guides/mjpeg.md) for more details.
 
 ## App Management
 
