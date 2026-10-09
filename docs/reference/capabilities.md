@@ -68,8 +68,8 @@ for real devices and [`appium:avd`](#avd) for emulators.
 | -- | -- | -- |
 | `appium:platformVersion` | `string` | Not specified |
 
-The platform version of the device under test. Used for device selection if `appium:udid` or
-`appium:avd` is not provided.
+The platform version of the device under test. Used for device selection if [`appium:udid`](#udid)
+or [`appium:avd`](#avd) is not provided.
 
 ### udid
 
@@ -78,8 +78,8 @@ The platform version of the device under test. Used for device selection if `app
 | `appium:udid` | `string` | Not specified |
 
 UDID of the device under test. Can be retrieved by running `adb devices`. If neither this capability
-nor `appium:avd` is set, the driver will automatically try to use the first connected device. Always
-set this capability if you run parallel tests.
+nor [`appium:avd`](#avd) is set, the driver will automatically try to use the first connected
+device. Always set this capability when running parallel tests.
 
 ### skipDeviceInitialization
 
@@ -488,7 +488,8 @@ The port on the host machine where the UiAutomator2 server should be listening. 
 each session - see the [Testing in Parallel guide](../guides/parallel-tests.md) for details. If not
 provided, Appium will try the first available port in the range `[8200, 8299]`.
 
-On the device under test, the UiAutomator2 server is always started on port `6790`.
+On the device under test, the UiAutomator2 server port can be configured using the
+[`serverPort`](./settings.md#serverport) setting.
 
 ### uiautomator2ServerInstallTimeout
 
@@ -538,7 +539,8 @@ The port on the host machine where the MJPEG screenshot streaming server should 
 not specified, the MJPEG stream from the device under test is not forwarded. Can be used to connect
 to the device MJPEG stream outside of the session.
 
-On the device under test, the MJPEG server is always started on port `7810`.
+On the device under test, the MJPEG server port can be configured using the
+[`mjpegServerPort`](./settings.md#mjpegserverport) setting.
 
 Refer to [the MJPEG guide](../guides/mjpeg.md) for more details.
 
