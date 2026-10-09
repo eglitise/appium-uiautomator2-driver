@@ -33,6 +33,8 @@ If provided, the driver will try to start the test in web context mode, instead 
 native mode. Refer to the [Hybrid Mode guide](../guides/hybrid.md) for more details. Can usually be
 set to `chrome`.
 
+Do not set this capability in combination with either [`appium:app`](#app) or [`appium:appPackage`](#apppackage).
+
 ### pageLoadStrategy
 
 | Name | Type | Default |
@@ -527,11 +529,9 @@ Refer to [the MJPEG guide](../guides/mjpeg.md) for more details.
 | `appium:app` | `string` | Not specified |
 
 Full path to a file on the host machine, or URL to a remote location, that contains the application
-under test. Required unless [`appium:appPackage`](#apppackage) is specified.
+under test. The app file must have either the `.apk` or `.apks` extension.
 
-The app file must have either the `.apk` or `.aab` extension. Files with the `.aab` extension are
-only supported since driver version 2.1.0, and require `bundletool.jar` to be present on the system
-`PATH`.
+Do not set this capability in combination with [`browserName`](#browsername).
 
 ### appPackage
 
@@ -539,10 +539,11 @@ only supported since driver version 2.1.0, and require `bundletool.jar` to be pr
 | -- | -- | -- |
 | `appium:appPackage` | `string` | Not specified |
 
-Package identifier of the application under test. Required unless [`appium:app`](#app) is specified.
+Package identifier of the application under test. Can be provided in combination with
+[`appium:app`](#app), but if only `appium:app` is provided, the package identifier is automatically
+detected from the app manifest.
 
-It is allowed to set both `appium:app` and this capability, but if only `appium:app` is provided,
-the package identifier is automatically detected from the app manifest.
+Do not set this capability in combination with [`browserName`](#browsername).
 
 Refer to the [Activity Startup guide](../guides/activity-startup.md) for more details.
 
@@ -605,11 +606,49 @@ Refer to the [Activity Startup guide](../guides/activity-startup.md) for more de
 
 ### intentCategory
 
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:intentCategory` | `string` | `android.intent.category.LAUNCHER` (`CATEGORY_LAUNCHER`) |
+
+Intent category to apply when launching the app. Refer to [the Android Intent documentation](https://developer.android.com/reference/android/content/Intent)
+for a list of possible values (prefixed with `CATEGORY_`).
+
+Can also be specified using the [`mobile: startActivity`](./execute-methods.md#mobile-startactivity)
+execute method.
+
 ### intentAction
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:intentAction` | `string` | `android.intent.action.MAIN` (`ACTION_MAIN`) |
+
+Intent action to apply when launching the app. Refer to [the Android Intent documentation](https://developer.android.com/reference/android/content/Intent)
+for a list of possible values (prefixed with `ACTION_`).
+
+Can also be specified using the [`mobile: startActivity`](./execute-methods.md#mobile-startactivity)
+execute method.
 
 ### intentFlags
 
+| <div style="width:10em">Name</div> | Type | Default |
+| -- | -- | -- |
+| `appium:intentFlags` | `string` | `0x10200000` (`FLAG_ACTIVITY_NEW_TASK` and `FLAG_ACTIVITY_RESET_TASK_IF_NEEDED`) |
+
+Intent flags to apply when launching the app. Refer to [the Android Intent documentation](https://developer.android.com/reference/android/content/Intent)
+for a list of possible values (prefixed with `FLAG_`).
+
+Can also be specified using the [`mobile: startActivity`](./execute-methods.md#mobile-startactivity)
+execute method.
+
 ### optionalIntentArguments
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:optionalIntentArguments` | `string` | Not specified |
+
+Space-separated string of one or more intent arguments to apply to the launchable activity. The
+format should be `-flag1 key1`, `-flag2 key2 value2`, or a combination like
+`-flag1 key1 -flag2 key2 value2`.
 
 ### androidInstallTimeout
 
@@ -623,16 +662,18 @@ Maximum amount of milliseconds to wait until the application under test is insta
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:enforceAppInstall` | `boolean` | `false` |
+| `appium:enforceAppInstall` | `boolean` | Not specified |
 
 Whether to always reinstall the application under test, even if a newer version already exists
 on the device under test.
+
+Has no effect if either [`appium:noReset`](#noreset) or [`appium:fullReset`](#fullreset) is set.
 
 ### noReset
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:noReset` | `boolean` | `false` |
+| `appium:noReset` | `boolean` | Not specified |
 
 Whether to prevent the app from being automatically relaunched and its data cleaned before session
 startup.
@@ -654,9 +695,10 @@ Mutually exclusive with [`appium:noReset`](#noreset).
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:dontStopAppOnReset` | `boolean` | `false` |
+| `appium:dontStopAppOnReset` | `boolean` | Not specified |
 
-Whether to skip termination of the app under test upon session deletion.
+Whether to skip termination of the app under test upon session deletion, as well as upon session
+start, in case the app is already running.
 
 ### autoLaunch
 
@@ -668,13 +710,29 @@ Whether to launch the application under test on session start, and wait until it
 
 ### forceAppLaunch
 
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:forceAppLaunch` | `boolean` | Not specified |
+
+Whether to relaunch the app upon session startup even if [`appium:noReset`](#noreset) is set.
+
+Available since driver version 2.12.0.
+
 ### shouldTerminateApp
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:shouldTerminateApp` | `boolean` | Not specified |
+
+Whether to stop the app upon session deletion even if [`appium:noReset`](#noreset) is set.
+
+Available since driver version 2.14.0.
 
 ### autoGrantPermissions
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:autoGrantPermissions` | `boolean` | `false` |
+| `appium:autoGrantPermissions` | `boolean` | Not specified |
 
 Whether to automatically grant all requested application permissions upon session startup.
 
@@ -682,7 +740,18 @@ If the `targetSdk` of the application under test is below `23`, or the device un
 Android 5 (Lollipop / API level 22), granting permissions requires the application to be
 reinstalled, for example, using the [`appium:fullReset`](#fullreset) capability.
 
+If the application requires some special security permissions (e.g. access to notifications or
+media recording), they can be changed using the [`mobile: changePermissions`](./execute-methods.md#mobile-changepermissions)
+execute method with `appops` target.
+
 ### userProfile
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:userProfile` | `integer` | Not specified |
+
+Identifier of a [user profile](https://source.android.com/devices/tech/admin/multi-user) used when
+launching the app under test. By default, the app is launched using the currently active user.
 
 ### otherApps
 
@@ -691,10 +760,8 @@ reinstalled, for example, using the [`appium:fullReset`](#fullreset) capability.
 | `appium:otherApps` | `string` or `Array<string>` | Not specified |
 
 One or more application packages (either filepaths on the host machine, or URLs to remote locations)
-that should be installed on the device along with the application under test. Unlike the app under
-test, these apps are not additionally signed, and only apps with the `.apk` extension are supported.
-
-Available since driver version 9.2.0.
+that should be installed on the device along with the application under test. The app files must
+have either the `.apk` or `.apks` extension.
 
 ### uninstallOtherPackages
 
@@ -710,7 +777,7 @@ and `io.appium.uiautomator2.server.test`).
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:allowTestPackages` | `boolean` | `false` |
+| `appium:allowTestPackages` | `boolean` | Not specified |
 
 Whether to allow installation of test-only versions of the application under test. Maps to the `-t`
 flag of `adb install`. Only applied if the application is to be installed or reinstalled.
