@@ -903,9 +903,22 @@ This capability does not affect `.apks` packages, as they are expected to be alr
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:autoWebview` | `boolean` | `false` |
+| `appium:autoWebview` | `boolean` | Not specified |
 
-Whether to automatically switch to the first available webview context upon session start.
+Whether to automatically switch to a webview context upon session start. The name of the selected
+context is derived from the application package, prefixed by `WEBVIEW_`, but can be changed using
+the [`appium:autoWebviewName`](#autowebviewname) capability. 
+
+### autoWebviewName
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:autoWebviewName` | `string` | Not specified |
+
+Custom name of a webview context, used to replace the application package part of the initial
+webview name used by [`appium:autoWebview`](#autowebview).
+
+Available since driver version 2.10.0.
 
 ### autoWebviewTimeout
 
@@ -914,7 +927,7 @@ Whether to automatically switch to the first available webview context upon sess
 | `appium:autoWebviewTimeout` | `integer` | `2000` |
 
 Maximum number of milliseconds to wait until a webview is available before switching to it.
-Requires [`appium:autoWebview`](#autowebview) to be set.
+Has no effect unless [`appium:autoWebview`](#autowebview) is set.
 
 ### androidDeviceSocket
 
@@ -1059,7 +1072,7 @@ details.
 
 Whether to use the ChromeDriver binary bundled with the driver.
 
-This capability is primarily relevant for driver versions 3.3.1 or earlier, which automatically
+This capability is primarily relevant for driver versions 3.7.11 or earlier, which automatically
 downloaded ChromeDriver upon installation.
 
 ### chromedriverDisableBuildCheck
@@ -1084,7 +1097,7 @@ session context terminates this connection. Requires the BiDi protocol to be ena
 
 Note that older ChromeDriver versions may only have partial to no support for the BiDi protocol.
 
-Available since driver version 6.0.3.
+Available since driver version 6.1.0.
 
 ### chromedriverGrantPermissions
 
@@ -1095,7 +1108,7 @@ Available since driver version 6.0.3.
 Whether to automatically grant all requested runtime permissions for the Chrome/webview package,
 so that the session is not interrupted by any native runtime permission dialogs.
 
-Available since driver version 9.0.2.
+Available since driver version 8.1.0.
 
 ### recreateChromeDriverSessions
 
