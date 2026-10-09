@@ -160,17 +160,96 @@ the PsychoPath library.
 
 ## `ignoreUnimportantViews`
 
+| Type | Default |
+| -- | -- |
+| `boolean` | `false` |
+
+Whether to enable compression of the application source layout hierarchy.
+
+If enabled, the layout hierarchy derived from the accessibility framework will only contain nodes
+that are important for UI Automator testing. Any unnecessary surrounding layout nodes that make
+viewing and searching the hierarchy inefficient are removed.
+
 ## `includeA11yActionsInPageSource`
+
+| Type | Default |
+| -- | -- |
+| `boolean` | `false` |
+
+Whether to include the `actions` element attribute in the application source. This attribute value
+could be huge if elements in the page source have a lot of actions, which could affect the
+performance of page source generation.
+
+Available since driver version 4.0.0.
 
 ## `includeExtraRenderingInfo`
 
+| Type | Default |
+| -- | -- |
+| `boolean` | `false` |
+
+Whether to include the `text-size` and `text-unit` element attributes in the application source.
+Retrieval of these attributes has a slight effect on the performance of page source generation. 
+
+Available since driver version 6.7.10.
+
 ## `includeExtrasInPageSource`
+
+| Type | Default |
+| -- | -- |
+| `boolean` | `false` |
+
+Whether to include the `extras` element attribute in the application source. This attribute value
+could be huge if elements in the page source have a lot of extras, which could affect the
+performance of page source generation.
+
+Available since driver version 2.1.0.
 
 ## `keyInjectionDelay`
 
+| Type | Default |
+| -- | -- |
+| `integer` | `0` |
+
+Delay in milliseconds between key presses, used when inputting text.
+
 ## `limitXPathContextScope`
 
+| Type | Default |
+| -- | -- |
+| `boolean` | `true` |
+
+Whether to limit the context scope of XPath-based element lookups to the parent element.
+
+Due to historical reasons, by default, the driver limits the scope of element context-based
+searches to the parent element. This means that a request like
+`findElement(By.xpath, "//root").findElement(By.xpath, "./..")` would always fail, because the
+driver only collects descendants of the `root` element. Disabling this setting causes the
+retrieved page source to includes the entire page source, resulting in the  aforementioned query to
+no longer fail.
+
+Disabling this setting nonetheless requires caution with other context-based queries - for example,
+a request like `findElement(By.xpath, "//root").findElement(By.xpath, "//element")` would ignore
+the current context and search for `element` through the whole page source. In such cases it is
+recommended to use the dot (`.`) notation: `findElement(By.xpath, "//root").findElement(By.xpath, ".//element")`.
+
 ## `mapTestTagToResourceId`
+
+| Type | Default |
+| -- | -- |
+| `boolean` | `false` |
+
+Whether to map the [`testTag`](https://developer.android.com/reference/kotlin/androidx/compose/ui/platform/package-summary#(androidx.compose.ui.Modifier).testTag(kotlin.String))
+semantic property of Jetpack Compose elements onto their `resource-id` attribute.
+
+Enabling this setting mirrors the behavior of Compose's own [`testTagsAsResourceId`](https://developer.android.com/reference/kotlin/androidx/compose/ui/semantics/package-summary#(androidx.compose.ui.semantics.SemanticsPropertyReceiver).testTagsAsResourceId()),
+which can otherwise only be toggled from within the app's own composable tree. The mapping is
+consistently applied to `getAttribute`, page source/XPath generation, and `id`-based element
+lookups. Unlike the [`disableIdLocatorAutocompletion`](#disableidlocatorautocompletion) setting,
+bare `testTag` values are matched as-is, without automatically prepending the application package
+name.
+
+Available since driver version 8.4.0.
 
 ## `mjpegBilinearFiltering`
 
