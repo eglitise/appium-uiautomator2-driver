@@ -168,6 +168,39 @@ Whether to disable window animations. [Google recommends disabling animations wh
 in order to avoid flakiness. The animation state is automatically restored after the session is
 stopped, unless the session is ended unexpectedly, for Android 7 (Nougat / API level 25) or older.
 
+### language
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:language` | `string` | Not specified |
+
+Language code to use for setting the locale of the device under test. The code should match the
+`language` field for Android's [`Locale` class](https://developer.android.com/reference/java/util/Locale.html).
+Must be provided together with [`appium:locale`](#locale).
+
+The language set by this capability is also used by the [`mobile: getAppStrings`](./execute-methods.md#mobile-getappstrings)
+execute method, unless explicitly overridden.
+
+### locale
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:locale` | `string` | Not specified |
+
+Country code to use for setting the locale of the device under test. The code should match the
+`country` field for Android's [`Locale` class](https://developer.android.com/reference/java/util/Locale.html).
+Must be provided together with [`appium:language`](#language).
+
+### localeScript
+
+| Name | Type | Default |
+| -- | -- | -- |
+| `appium:localeScript` | `string` | Not specified |
+
+Script code to use for setting the locale of the device under test. The code should match the
+`script` field for Android's [`Locale` class](https://developer.android.com/reference/java/util/Locale.html).
+If specified, [`appium:language`](#language) and [`appium:locale`](#locale) must also be provided.
+
 ### timeZone
 
 | Name | Type | Default |
@@ -800,7 +833,7 @@ If set to `0`, the cache is disabled.
 
 | Name | Type | Default |
 | -- | -- | -- |
-| `appium:useKeystore` | `boolean` | `false` |
+| `appium:useKeystore` | `boolean` | Not specified |
 
 Whether to use a custom [keystore](https://developer.android.com/studio/publish/app-signing#certificates-keystores)
 to sign the app under test. By default, apps are signed with the default Appium debug certificate,
@@ -860,45 +893,9 @@ Used in combination with [`appium:useKeystore`](#usekeystore), [`appium:keystore
 | `appium:noSign` | `boolean` | `false` |
 
 Whether to skip signing of the application under test, and use it as-is. By default, all apps are
-signed with the default Appium debug signature. Make sure that the server package is signed with
-the same signature as the application under test before disabling this capability.
+signed with the default Appium debug signature.
 
-This capability does not affect `.apks` packages, as they are expected to be already signed. 
-
-## App Localization
-
-### language
-
-| Name | Type | Default |
-| -- | -- | -- |
-| `appium:language` | `string` | Not specified |
-
-Language code to use for setting the locale of the device under test. The code should match the
-`language` field for Android's [`Locale` class](https://developer.android.com/reference/java/util/Locale.html).
-Must be provided together with [`appium:locale`](#locale).
-
-The language set by this capability is also used by the [`mobile: getAppStrings`](./execute-methods.md#mobile-getappstrings)
-execute method, unless explicitly overridden.
-
-### locale
-
-| Name | Type | Default |
-| -- | -- | -- |
-| `appium:locale` | `string` | Not specified |
-
-Country code to use for setting the locale of the device under test. The code should match the
-`country` field for Android's [`Locale` class](https://developer.android.com/reference/java/util/Locale.html).
-Must be provided together with [`appium:language`](#language).
-
-### localeScript
-
-| Name | Type | Default |
-| -- | -- | -- |
-| `appium:localeScript` | `string` | Not specified |
-
-Script code to use for setting the locale of the device under test. The code should match the
-`script` field for Android's [`Locale` class](https://developer.android.com/reference/java/util/Locale.html).
-If specified, [`appium:language`](#language) and [`appium:locale`](#locale) must also be provided.
+This capability does not affect `.apks` packages, as they are expected to be already signed.
 
 ## Web Context
 
